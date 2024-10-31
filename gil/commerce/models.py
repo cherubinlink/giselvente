@@ -36,7 +36,7 @@ class Categorie(models.Model):
     mons_cat = models.CharField(max_length=200, unique=True)
     
     def __str__(self):
-        return self.noms_cat
+        return self.mons_cat
 
 # sous categories
 class SousCategorie(models.Model):
@@ -97,6 +97,9 @@ class Commande(models.Model):
     quantite = models.PositiveIntegerField(default=1)
     date_cmde = models.DateTimeField(auto_now_add=True)
     status_cmde = models.CharField(max_length=200, choices=CHOICES_CMDE)
+    
+    def montant_total(self):
+        return self.produit.prix * self.quantite
  
     
 # historisques des commandes
@@ -107,4 +110,17 @@ class HistoriqueCommande(models.Model):
     
     def __str__(self):
         return f"{self.commande.id} - {self.statut} on {self.date_changement}"
+
+
+# avis utilisateur sur un produit
+class Message(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    produit = models.ForeignKey(Produit, on_delete=models.CASCADE)
+    comment = models.TextField()
+    note = models.PositiveIntegerField(default=1, choices=[(i, str(i)) for i in range(1, 6)])
+    date_msg = models.DateTimeField(auto_now_add=True)
+    
+    
+    def __str__(self):
+        return f"Message from {self.user} on {self.produit}"
     

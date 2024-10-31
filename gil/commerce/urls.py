@@ -3,5 +3,8 @@ from commerce import views
 
 
 urlpatterns = [
-    path('',views.accueil,name='accueil')
+    path('',views.AccueiView.as_view(),name='accueil'),
+    
+    # detail produit
+    path('detail_produit/<int:pk>/',views.ProduitDetailView.as_view(), name='detail-produit'),
 ]
